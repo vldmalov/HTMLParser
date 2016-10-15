@@ -5,7 +5,7 @@
 
 namespace FileHelper {
     
-    std::vector<std::string> getDirFileNames(const std::string& dir)
+    std::vector<std::string> getDirFileNames(const std::string& dir, const std::string& extension)
     {
         std::vector<std::string> result;
         
@@ -22,8 +22,11 @@ namespace FileHelper {
             {
                 boost::filesystem::path current_path = it->path();
                 boost::filesystem::path filename = current_path.filename();
+                std::string currentFileExt = filename.extension().string();
                 
-                result.push_back(filename.native());
+                if( currentFileExt.find(extension) == 1 && currentFileExt.front() == '.') {
+                    result.push_back(filename.native());
+                }
             }
         }
         

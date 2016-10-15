@@ -11,7 +11,7 @@ const std::string DEFAULT_DIR_NAME = "../../examples";
 int main(int argc, const char * argv[]) {
     
     std::string dirName = DEFAULT_DIR_NAME;
-    std::vector<std::string> fileNames = FileHelper::getDirFileNames(dirName);
+    std::vector<std::string> fileNames = FileHelper::getDirFileNames(dirName, "html");
     if(fileNames.empty()) {
         std::cout << "Files not found! For proccessing required at least one xHTML file" << std::endl;
         exit(1);
@@ -27,8 +27,8 @@ int main(int argc, const char * argv[]) {
         parser->process();
         
         std::cout << "RESULT: " << std::endl;
-        std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
-        std::cout << *rootTag.get();
+//        std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
+//        std::cout << *rootTag.get();
         
         std::vector<std::string> pageLinks = parser->getPageLinks();
         std::cout << "Page links :" << std::endl;
