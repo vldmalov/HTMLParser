@@ -24,6 +24,7 @@ int main(int argc, const char * argv[]) {
     }
     
     std::shared_ptr<DirectedGraph> graph(new DirectedGraph());
+    std::unordered_map<std::string, std::shared_ptr<HTMLTag>> parsedXHTMLs;
     
     for(const std::string fileName : fileNames)
     {
@@ -33,15 +34,26 @@ int main(int argc, const char * argv[]) {
         std::shared_ptr<XHTMLParser> parser(new XHTMLParser(fullFileName));
         parser->process();
         
-//        std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
-//        std::cout << *rootTag.get();
-        
+        std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
+        parsedXHTMLs.insert(std::make_pair(fileName, rootTag));
+
         std::vector<std::string> pageLinks = parser->getPageLinks();
         for(const std::string& link : pageLinks) {
             graph->addEdge(fileName, link);
         }
     }
     
+    // Check results
+    
+    // Print all parsed HTML file structures
+    for(auto parsedXHTML : parsedXHTMLs) {
+        std::cout << "Parsed XHTML name: " << parsedXHTML.first << std::endl;
+        
+        std::shared_ptr<HTMLTag> htmlRoot = parsedXHTML.second;
+        std::cout << *htmlRoot.get() << std::endl;
+    }
+
+    // Check graphs: hasDirectEdge, hasLessThenTwoEdgeWay and serialize
     checkGraphData(graph);
     
     graph->saveToFile("graph.gr");
