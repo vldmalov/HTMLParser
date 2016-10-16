@@ -18,6 +18,9 @@ public:
     bool hasDirectEdge(const std::string nodeIdFrom, const std::string nodeIdTo) const;
     bool hasLessThenTwoEdgeWay(const std::string nodeIdFrom, const std::string nodeIdTo) const;
     
+    void saveToFile(const std::string& fileName) const;
+    void loadFromFile(const std::string& fileName);
+    
 private:
     NodesMap m_nodes;
 };

@@ -1,19 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
-#include <cstdio>
 
 #include "XHTMLParser.h"
 #include "FileHelper.h"
 #include "DirectedGraph.h"
 
-const std::string DEFAULT_DIR_NAME = "../../examples";
-
+void showUsageHint();
 void checkGraphData(std::shared_ptr<DirectedGraph> graph);
 
 int main(int argc, const char * argv[]) {
     
-    std::string dirName = DEFAULT_DIR_NAME;
+    if(argc != 2) {
+        showUsageHint();
+        exit(1);
+    }
+    
+    std::string dirName(argv[1]);
     std::vector<std::string> fileNames = FileHelper::getDirFileNames(dirName, "html");
     if(fileNames.empty()) {
         std::cout << "Files not found! For proccessing required at least one xHTML file" << std::endl;
@@ -24,29 +27,35 @@ int main(int argc, const char * argv[]) {
     
     for(const std::string fileName : fileNames)
     {
-        std::cout << fileName << std::endl;
+        std::cout << "Process file : " << fileName << std::endl;
         
         std::string fullFileName = FileHelper::getFullFileName(dirName, fileName);
-        
         std::shared_ptr<XHTMLParser> parser(new XHTMLParser(fullFileName));
         parser->process();
         
-        std::cout << "RESULT: " << std::endl;
 //        std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
 //        std::cout << *rootTag.get();
         
         std::vector<std::string> pageLinks = parser->getPageLinks();
-        std::cout << "Page links :" << std::endl;
         for(const std::string& link : pageLinks) {
-            std::cout << " " << link << std::endl;
             graph->addEdge(fileName, link);
         }
     }
-    std::cout << std::endl;
     
     checkGraphData(graph);
     
+    graph->saveToFile("graph.gr");
+    
+    std::shared_ptr<DirectedGraph> secondGraph(new DirectedGraph());
+    secondGraph->loadFromFile("graph.gr");
+    checkGraphData(secondGraph);
+    
     return 0;
+}
+
+void showUsageHint()
+{
+    std::cout << "usage: htmlParser source_directory" << std::endl;
 }
 
 void checkGraphData(std::shared_ptr<DirectedGraph> graph)
