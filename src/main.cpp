@@ -14,14 +14,14 @@ int main(int argc, const char * argv[]) {
     
     if(argc != 2) {
         showUsageHint();
-        exit(1);
+        return 1;
     }
     
     std::string dirName(argv[1]);
     std::vector<std::string> fileNames = FileHelper::getDirFileNames(dirName, "html");
     if(fileNames.empty()) {
         std::cout << "Files not found! For proccessing required at least one xHTML file" << std::endl;
-        exit(1);
+        return 1;
     }
     
     std::shared_ptr<DirectedGraph> graph(new DirectedGraph());
@@ -32,8 +32,8 @@ int main(int argc, const char * argv[]) {
         std::cout << "Process file : " << fileName << std::endl;
         
         std::string fullFileName = FileHelper::getFullFileName(dirName, fileName);
-        std::shared_ptr<XHTMLParser> parser(new XHTMLParser(fullFileName));
-        parser->process();
+        std::shared_ptr<XHTMLParser> parser = std::make_shared<XHTMLParser>();
+        parser->processFile(fullFileName);
         
         std::shared_ptr<HTMLTag> rootTag = parser->getRootTag();
         parsedXHTMLs.insert(std::make_pair(fileName, rootTag));

@@ -17,33 +17,28 @@ enum LastParsePhase {
 class XHTMLParser {
     
 public:
-    explicit XHTMLParser(const std::string& filename);
-    void process();
+    XHTMLParser();
+    void processFile(const std::string& filename);
     
-    std::shared_ptr<HTMLTag> getRootTag() const { return m_root_tag; }
+    std::shared_ptr<HTMLTag> getRootTag() const { return m_rootTag; }
     std::vector<std::string> getPageLinks() const { return m_pageLinks; }
     
 private:
-    void parseClosedTag(const std::string& word);
-    void processWord(const std::string& word);
-    void parseTag(const std::string& word);
-    void parseTagValue(const std::string& word);
+    void parseClosedTag     (const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
+    void processWord        (const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
+    void parseTag           (const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
+    void parseTagValue      (const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
     
-    void parseAttributeName(const std::string& word);
-    void parseAttributeValue(const std::string& word);
+    void parseAttributeName (const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
+    void parseAttributeValue(const std::string& word, LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
     
-    void closedCurrentTag();
+    void closedCurrentTag(LastParsePhase& lastPhase, std::shared_ptr<HTMLTag>& currentTag);
     
     XHTMLParser(const XHTMLParser&);
     XHTMLParser& operator=(const XHTMLParser&);
     
 private:
-    std::string                 m_filename;
-    std::shared_ptr<HTMLTag>    m_root_tag;
-    std::shared_ptr<HTMLTag>    m_current_tag;
-    
+    std::shared_ptr<HTMLTag>    m_rootTag;
     std::vector<std::string>    m_pageLinks;
-    LastParsePhase              m_last_parse_phase;
-    
-    std::pair<std::string, std::string> m_current_parsed_attribute;
+    std::pair<std::string, std::string> m_currentParsedAttribute;
 };
