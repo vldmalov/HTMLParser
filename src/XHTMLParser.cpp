@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "HTMLTag.h"
+
 XHTMLParser::XHTMLParser(const std::string& filename)
 : m_filename(filename)
 , m_root_tag(new HTMLTag())

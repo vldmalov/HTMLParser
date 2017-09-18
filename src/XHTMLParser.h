@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "HTMLTag.h"
+struct HTMLTag;
 
 enum LastParsePhase {
     LPP_NOTHING = 1,
@@ -33,6 +33,9 @@ private:
     void parseAttributeValue(const std::string& word);
     
     void closedCurrentTag();
+    
+    XHTMLParser(const XHTMLParser&);
+    XHTMLParser& operator=(const XHTMLParser&);
     
 private:
     std::string                 m_filename;

@@ -5,6 +5,7 @@
 #include "XHTMLParser.h"
 #include "FileHelper.h"
 #include "DirectedGraph.h"
+#include "HTMLTag.h"
 
 void showUsageHint();
 void checkGraphData(std::shared_ptr<DirectedGraph> graph);

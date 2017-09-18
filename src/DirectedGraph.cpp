@@ -4,13 +4,13 @@
 #include <sstream>
 #include <vector>
 
-void DirectedGraph::addEdge(const std::string nodeIdFrom, const std::string nodeIdTo)
+void DirectedGraph::addEdge(const std::string& nodeIdFrom, const std::string& nodeIdTo)
 {
     m_nodes[nodeIdFrom].NodeIdsTo.insert(nodeIdTo);
     m_nodes[nodeIdTo].NodeIdsFrom.insert(nodeIdFrom);
 }
 
-bool DirectedGraph::hasDirectEdge(const std::string nodeIdFrom, const std::string nodeIdTo) const
+bool DirectedGraph::hasDirectEdge(const std::string& nodeIdFrom, const std::string& nodeIdTo) const
 {
     NodesMap::const_iterator itFromNodeId = m_nodes.find(nodeIdFrom);
     if(itFromNodeId == m_nodes.end()) {
@@ -23,7 +23,7 @@ bool DirectedGraph::hasDirectEdge(const std::string nodeIdFrom, const std::strin
     return itFoundNodeTo != nodeIdsTo.end();
 }
 
-bool DirectedGraph::hasLessThenTwoEdgeWay(const std::string nodeIdFrom, const std::string nodeIdTo) const
+bool DirectedGraph::hasLessThenTwoEdgeWay(const std::string& nodeIdFrom, const std::string& nodeIdTo) const
 {
     NodesMap::const_iterator itFromNodeId = m_nodes.find(nodeIdFrom);
     NodesMap::const_iterator itToNodeId = m_nodes.find(nodeIdTo);
